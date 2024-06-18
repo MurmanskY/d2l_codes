@@ -1,6 +1,6 @@
-'''
-手动实现线性回归模型
-'''
+"""
+手写实现线性回归模型
+"""
 import torch
 import random
 import matplotlib
@@ -8,13 +8,32 @@ from d2l import torch as d2l  # 之前实现的函数包
 
 
 def synthetic_data(w, b, num_examples):
-    '''生成y=Xw+b+噪声'''
+    """生成y = Xw + b + 噪声
+
+    Args:
+        w (tensor): 系数矩阵
+        b (tensor): 偏置项
+        num_examples (int): 样本数
+
+    Returns:
+        _type_: 特征向量, 标签
+    """
     X = torch.normal(0, 1, (num_examples, len(w)))
     y = torch.matmul(X, w) + b  # 注意matmul()函数的用法
     y += torch.normal(0, 0.1, size=y.shape)
     return X, y.reshape((-1, 1))
 
 def data_iter(batch_size, features, labels):
+    """数据迭代器
+
+    Args:
+        batch_size (int): 小批量的值
+        features (tensor): 特征值
+        labels (tensor): 标签
+
+    Yields:
+        _type_: 重复喂数据
+    """
     num_examples = len(features)
     indices = list(range(num_examples))  # 获取所有下标
     random.shuffle(indices)  # 对下标随机排序
@@ -25,16 +44,38 @@ def data_iter(batch_size, features, labels):
         yield features[batch_indices], labels[batch_indices]  # 迭代作用，一次喂一小部分，直到全部喂完
 
 def linreg(X, w, b):
-    '''线性回归模型'''
+    """线性回归模型
+
+    Args:
+        X (tensor): input data
+        w (tensor): hyperparameters
+        b (tensor): hyperparameters
+
+    Returns:
+        tensor: Model calculation formula
+    """
     return torch.matmul(X, w) + b
 
-
 def squared_loss(y_hat, y):
-    '''均方损失'''
+    """均方损失
+
+    Args:
+        y_hat (tensor): predict value
+        y (tensor): true value
+
+    Returns:
+        float: mean squared loss
+    """
     return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
 
 def sqd(params, lr, batch_size):
-    '''小批量随机梯度下降'''
+    """小批量梯度随机下降
+
+    Args:
+        params (tensor): hyperparameters
+        lr (float): hyperparameters learning rate
+        batch_size (int): 小批量大小
+    """
     with torch.no_grad(): #在上下文管理器内部，禁用自动梯度计算，提高性能，节省内存
         for param in params: #遍历模型所有参数，
             param -= lr * param.grad / batch_size # 使用平均梯度更新参数
