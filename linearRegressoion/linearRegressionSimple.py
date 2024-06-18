@@ -1,10 +1,12 @@
-'''
-线性回归的简洁实现，使用nn模块
-'''
+"""
+线性回归的简洁实现,使用nn模块
+"""
+
 import numpy as np
 import torch
 from torch.utils import data #引入处理数据的模块
 from d2l import torch as d2l
+
 
 true_w = torch.tensor([2, -3.4])
 true_b = torch.tensor(4.2)
