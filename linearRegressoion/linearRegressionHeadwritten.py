@@ -82,7 +82,7 @@ def sqd(params, lr, batch_size):
             param.grad.zero_()
 
 
-true_w = torch.tensor([2, -3.4])
+true_w = torch.tensor([2, -3.4]) 
 true_b = 4.2
 features, labels = synthetic_data(true_w, true_b, 1000) # 生成数据用的w和b，仍然是添加了一个噪声的
 # 最后的预测结果应该会和true_w和true_b相近

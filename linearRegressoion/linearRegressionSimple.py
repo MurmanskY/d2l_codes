@@ -35,11 +35,13 @@ data_iter = load_array((features, labels), batch_size)
 print(next(iter(data_iter)))
 '''第一参数指定输入特征形状：2
 第二个指定输出特征形状：1'''
-net = nn.Sequential(nn.Linear(2, 1))
+net = nn.Sequential(nn.Linear(2, 1)) #网络添加参数
 
 net[0].weight.data.normal_(0, 0.01)
 net[0].bias.data.fill_(0)
+'''均方误差'''
 loss = nn.MSELoss()
+'''SGD随机梯度下降'''
 trainer = torch.optim.SGD(net.parameters(), lr=0.03)
 num_epochs = 3
 for epoch in range(num_epochs):
@@ -47,6 +49,7 @@ for epoch in range(num_epochs):
         l = loss(net(X) ,y)
         trainer.zero_grad()
         l.backward()
+        '''进行模型更新'''
         trainer.step()
     l = loss(net(features), labels)
     print(f'epoch {epoch + 1}, loss {l:f}')
